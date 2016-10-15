@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='juke'>
+  <head>
+    <title>Juke</title>
+    <script src = "/angular/angular.min.js"></script>
+    <script src = "app.js"></script>
+    <link href="/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="/bootstrap-dark.css" rel="stylesheet" />
+    <link href="/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="main" class="container-fluid">
+
+      <div class="col-xs-2">        
+      <sidebar>
+          <img src="juke.svg" class="logo">
+          <section>
+            <h4 class="menu-item active">
+              <a href="#">ALBUMS</a>
+            </h4>
+          </section>
+        </sidebar>
+      </div>
+
+      <div class="col-xs-10" ng-controller = "albumCtrl">
+             <div class="album">
+              <p>
+            <h3>{{albumData.name}} </h3>
+            <img src="{{ albumData.imageUrl }}" class="img-thumbnail">
+          </p>
+          <table class='table'>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Artists</th>
+                <th>Genres</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="song in albumData.songs" ng-class = "{active: currentSong === song}">
+                <td>
+                  <button class="btn btn-default btn-xs" ng-click = "play(song, $index)" ng-hide = "currentSong === song">
+                    <span class="glyphicon glyphicon-play"></span>
+                  </button>
+                </td>
+                <td>{{song.name}}</td>
+                <td><span ng-repeat = "artist in song.artists">{{artist.name}} </span></td>
+                <td>{{song.genres | join }}</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <footer ng-controller = "playerCtrl">
+        <div ng-show="showFooter">
+          <div class="pull-left">
+            <button class="btn btn-default" ng-click = "backwards()">
+              <span class="glyphicon glyphicon-step-backward"></span>
+            </button>
+            <button class="btn btn-default" ng-click = "pause()">
+              <span class="glyphicon" ng-class="{'glyphicon-pause': !isPaused, 'glyphicon-play': isPaused}"></span>
+            </button>
+            <button class="btn btn-default" ng-click = "forwards()">
+              <span class="glyphicon glyphicon-step-forward"></span>
+            </button>
+          </div>
+          <div class="bar">
+              <div class="progress">
+                  <div class="progress-bar" ng-style="{width: progress + '%'}"></div>
+              </div>
+            </div>
+        </div>
+      </footer>
+
+    </div>
+  </body>
+</html>
